@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewAccountName"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:text="Tên tài khoản" />
+
+    <TextView
+        android:id="@+id/textViewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:text="Mật khẩu" />
+
+    <TextView
+        android:id="@+id/textViewPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:text="Số điện thoại" />
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:text="Email" />
+
+    <Button
+        android:id="@+id/buttonResetPassword"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:text="Reset password" />
+
+    <TextView
+        android:id="@+id/textViewResetPassword"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:text="Nhập mật khẩu mới" />
+
+    <EditText
+        android:id="@+id/editTextNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buttonSavePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Lưu"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|right|end"
+        android:orientation="vertical">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end"
+            app:menu="@menu/bottom_navigation_menu" />
+    </LinearLayout>
+
+</LinearLayout>
