@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3C9359"
+
     android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView3"
+        android:layout_marginBottom="70dp"
         android:layout_width="match_parent"
-        android:layout_height="174dp"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/logo" />
 
     <EditText
@@ -18,8 +19,9 @@
         android:layout_width="330dp"
         android:layout_height="70dp"
         android:hint="Username"
-        android:textColor="#0B0404"
-        android:textColorHint="#CDF6F6F6"
+        android:drawableRight="@drawable/ic_user"
+        android:textColor="#FF5722"
+        android:textColorHint="#03A9F4"
         android:textStyle="bold" />
 
     <EditText
@@ -27,8 +29,10 @@
         android:layout_width="330dp"
         android:layout_height="70dp"
         android:hint="Password"
+        android:drawableRight="@drawable/ic_pass"
         android:inputType="textPassword"
-        android:textColorHint="#BCFFFFFF"
+        android:textColor="#FF5722"
+        android:textColorHint="#03A9F4"
         android:textStyle="bold" />
 
     <EditText
@@ -36,8 +40,10 @@
         android:layout_width="330dp"
         android:layout_height="70dp"
         android:hint="Phone number"
+        android:drawableRight="@drawable/ic_phone"
         android:inputType="phone"
-        android:textColorHint="#B4FFFFFF"
+        android:textColor="#FF5722"
+        android:textColorHint="#03A9F4"
         android:textStyle="bold" />
 
     <EditText
@@ -45,17 +51,20 @@
         android:layout_width="330dp"
         android:layout_height="70dp"
         android:hint="Email"
-        android:textColorHint="#B4FFFFFF"
-        android:textStyle="bold" />/>
+        android:drawableRight="@drawable/ic_gmail"
+        android:textColor="#FF5722"
+        android:textColorHint="#03A9F4"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/buttonRegister"
         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-        android:layout_width="136dp"
-        android:layout_height="65dp"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="Đăng ký"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#00776C"
+        android:textColor="#F43636"
         android:textSize="20sp"
         android:textStyle="bold" />
 

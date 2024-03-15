@@ -21,6 +21,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_bar" >
+        <ViewFlipper
+            android:id="@+id/viewflipper"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <ImageView
+                android:scaleType="centerCrop"
+                android:src="@drawable/anh1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:scaleType="centerCrop"
+                android:src="@drawable/anh2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:scaleType="centerCrop"
+                android:src="@drawable/anh3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </ViewFlipper>
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -28,8 +50,9 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_stories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200dp" />
 
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>

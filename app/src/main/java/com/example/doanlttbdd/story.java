@@ -6,15 +6,18 @@ public class story {
     private String author;
     private String description;
 
+
+
     public story(String title, String author, String description) {
         // Constructor mặc định
     }
 
-    public story(int id, String title, String author, String description) {
+    public story(int id, String title, String author, String description, String image) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
+
     }
 
     public int getId() {
@@ -48,4 +51,5 @@ public class story {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

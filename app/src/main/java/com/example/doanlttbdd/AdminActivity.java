@@ -20,6 +20,7 @@ public class AdminActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextAuthor;
     private EditText editTextDescription;
+    private EditText editImg;
     private Button buttonAdd;
 
     private BottomNavigationView bottomNavigationView;
@@ -34,6 +35,7 @@ public class AdminActivity extends AppCompatActivity {
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextAuthor = findViewById(R.id.editTextAuthor);
         editTextDescription = findViewById(R.id.editTextDescription);
+        editImg = findViewById(R.id.editImg);
         buttonAdd = findViewById(R.id.buttonAdd);
 
         databaseHelper = new DatabaseHelper(this);
@@ -44,6 +46,7 @@ public class AdminActivity extends AppCompatActivity {
                 String title = editTextTitle.getText().toString();
                 String author = editTextAuthor.getText().toString();
                 String description = editTextDescription.getText().toString();
+                String Image = editImg.getText().toString();
 
                 long result = databaseHelper.insertBook(title, author, description);
 

@@ -19,6 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_AUTHOR = "author";
     private static final String COLUMN_DESCRIPTION = "description";
 
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -31,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TITLE + " TEXT," +
                 COLUMN_AUTHOR + " TEXT," +
                 COLUMN_DESCRIPTION + " TEXT" +
+
                 ")";
         db.execSQL(CREATE_STORY_TABLE);
     }
@@ -47,6 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TITLE, title);
         values.put(COLUMN_AUTHOR, author);
         values.put(COLUMN_DESCRIPTION, description);
+
 
         return db.insert(TABLE_STORY, null, values);
     }
