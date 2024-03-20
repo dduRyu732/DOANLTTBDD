@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "story";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_STORY = "story";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
                 COLUMN_TITLE + " TEXT," +
                 COLUMN_AUTHOR + " TEXT," +
-                COLUMN_DESCRIPTION + " TEXT" +
+                COLUMN_DESCRIPTION + " TEXT, " +
                 COLUMN_CONTENT + "TEXT " +
                 ")";
         db.execSQL(CREATE_STORY_TABLE);
