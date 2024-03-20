@@ -10,17 +10,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.view.ActionBarPolicy;
+import androidx.appcompat.widget.ButtonBarLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,11 +46,16 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonAddStory;
 
 
+    ViewFlipper viewFlipper;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        viewFlipper = findViewById(R.id.viewflipper);
+        viewFlipper.setFlipInterval(3000);
+        viewFlipper.setAutoStart(true);
         databaseHelper = new DatabaseHelper(MainActivity.this);
         BookAdapter bookAdapter = new BookAdapter(MainActivity.this);
         List<Story> bookList = databaseHelper.getAllStories();
