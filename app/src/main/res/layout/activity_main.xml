@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <include layout="@layout/layout_top_bar" />
+        <include
+            layout="@layout/layout_top_bar"
+            android:layout_gravity="bottom" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -24,8 +26,10 @@
         <ListView
             android:id="@+id/list_view_stories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" >
 
+
+        </ListView>
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,6 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu" >
+
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </RelativeLayout>

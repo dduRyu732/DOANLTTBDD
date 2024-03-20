@@ -2,6 +2,7 @@ package com.example.doanlttbdd;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView storyListView;
     private DatabaseHelper databaseHelper;
     private ImageButton buttonAccountInfo;
+    private Button buttonAddStory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +41,10 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter bookAdapter = new BookAdapter(MainActivity.this);
         List<Story> bookList = databaseHelper.getAllStories();
         bookAdapter.setBookList(bookList);
-
-
-
-
+        buttonAddStory = findViewById(R.id.buttonAddStory);
         storyListView = findViewById(R.id.list_view_stories);
         storyListView.setAdapter(bookAdapter);
 
-        Log.d("MainActivity", "Số Lượng Truyện: " + bookList.size());
 
         buttonAccountInfo = findViewById(R.id.buttonAccountInfo);
         buttonAccountInfo.setOnClickListener(new View.OnClickListener() {
@@ -131,4 +131,5 @@ public class MainActivity extends AppCompatActivity {
             return bookList;
         }
     }
+
 }

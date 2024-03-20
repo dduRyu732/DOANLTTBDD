@@ -6,11 +6,14 @@ public class Story {
     private String author;
     private String description;
 
-    public Story(String title, String author, String description) {
+    private String content;
+
+    public Story(String title, String author, String description, String content) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
+        this.content = content;
     }
 
     public int getId() {
@@ -44,4 +47,6 @@ public class Story {
     public void setDescription(String description) {
         this.description = description;
     }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 }

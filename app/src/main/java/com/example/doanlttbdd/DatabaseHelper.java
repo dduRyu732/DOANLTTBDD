@@ -19,6 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_AUTHOR = "author";
     private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_CONTENT ="content";
     private Context context;
      private final String TAG ="DatabaseHelper";
 
@@ -36,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TITLE + " TEXT," +
                 COLUMN_AUTHOR + " TEXT," +
                 COLUMN_DESCRIPTION + " TEXT" +
+                COLUMN_CONTENT + "TEXT " +
                 ")";
         db.execSQL(CREATE_STORY_TABLE);
     }
@@ -45,13 +47,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STORY);
         onCreate(db);
     }
-    public long insertBook(String title, String author, String description) {
+    public long insertBook(String title, String author, String description, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_TITLE, title);
         values.put(COLUMN_AUTHOR, author);
         values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_CONTENT, content);
 
         return db.insert(TABLE_STORY, null, values);
 
@@ -72,8 +75,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
                 @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(COLUMN_AUTHOR));
                 @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT));
 
-                Story book = new Story(title, author, description);
+                Story book = new Story( title, author, description, content);
 
                 // Thêm đối tượng truyện vào danh sách
                 storyList.add(book);

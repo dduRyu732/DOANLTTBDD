@@ -32,13 +32,16 @@ public class AccountInfoActivity extends AppCompatActivity {
     private EditText editTextNewPassword;
     private Button buttonSavePassword;
     private Dialog changePasswordDialog;
+    private Button buttonAddStory;
+    private SharedPreferences sharedPreferences;
+
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         textViewAccountName = findViewById(R.id.textViewAccountName);
         textViewPassword = findViewById(R.id.textViewPassword);
         textViewPhoneNumber = findViewById(R.id.textViewPhoneNumber);
@@ -48,6 +51,24 @@ public class AccountInfoActivity extends AppCompatActivity {
         buttonSavePassword = findViewById(R.id.buttonSavePassword);
         textViewEmail = findViewById(R.id.textViewEmail);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        buttonAddStory = findViewById(R.id.buttonAddStory);
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (isLoggedIn) {
+            String username = sharedPreferences.getString("username", "");
+            if (username.equals("admin")) {
+                buttonAddStory.setVisibility(View.VISIBLE); // Hiển thị nút "Thêm truyện"
+            } else {
+                buttonAddStory.setVisibility(View.GONE); // Ẩn nút "Thêm truyện"
+            }
+        } else {
+            buttonAddStory.setVisibility(View.GONE); // Ẩn nút "Thêm truyện"
+        }
+        buttonAddStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToAddStory(); // Gọi phương thức để chuyển đến AdminActivity
+            }
+        });
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -146,5 +167,17 @@ public class AccountInfoActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("password", newPassword);
         editor.apply();
+    }
+    private void navigateToAddStory() {
+        Intent intent = new Intent(AccountInfoActivity.this, AdminActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Kết thúc Activity hiện tại khi người dùng chọn nút home/back
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

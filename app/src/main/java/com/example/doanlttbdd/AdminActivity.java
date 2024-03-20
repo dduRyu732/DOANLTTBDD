@@ -21,10 +21,12 @@ public class AdminActivity extends AppCompatActivity {
     private EditText editTextAuthor;
     private EditText editTextDescription;
     private Button buttonAdd;
+    private EditText editTextContent;
 
     private BottomNavigationView bottomNavigationView;
 
     private DatabaseHelper databaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class AdminActivity extends AppCompatActivity {
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextAuthor = findViewById(R.id.editTextAuthor);
         editTextDescription = findViewById(R.id.editTextDescription);
+        editTextContent = findViewById(R.id.editTextContent);
         buttonAdd = findViewById(R.id.buttonAdd);
 
         databaseHelper = new DatabaseHelper(this);
@@ -44,14 +47,16 @@ public class AdminActivity extends AppCompatActivity {
                 String title = editTextTitle.getText().toString();
                 String author = editTextAuthor.getText().toString();
                 String description = editTextDescription.getText().toString();
+                String content = editTextContent.getText().toString();
 
-                long result = databaseHelper.insertBook(title, author, description);
+                long result = databaseHelper.insertBook(title, author, description, content);
 
                 if (result != -1) {
                     makeText(AdminActivity.this, "?", Toast.LENGTH_SHORT).show();makeText(AdminActivity.this, "Book added successfully", Toast.LENGTH_SHORT).show();
                     editTextTitle.setText("");
                     editTextAuthor.setText("");
                     editTextDescription.setText("");
+                    editTextContent.setText("");
                 } else {
                     makeText(AdminActivity.this, "Failed to add book", Toast.LENGTH_SHORT).show();
                 }
