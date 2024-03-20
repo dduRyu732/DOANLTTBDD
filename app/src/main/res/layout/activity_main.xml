@@ -13,13 +13,12 @@
 
         <include
             layout="@layout/layout_top_bar"
-
-             />
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_container"
+    <RelativeLayout
+        android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_bar">
@@ -28,11 +27,12 @@
             android:id="@+id/viewflipper"
             android:layout_width="match_parent"
             android:layout_height="200dp">
+
             <ImageView
-                android:scaleType="centerCrop"
-                android:src="@drawable/anh1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="199dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/anh1" />
             <ImageView
                 android:scaleType="centerCrop"
                 android:src="@drawable/anh2"
@@ -46,15 +46,13 @@
 
         </ViewFlipper>
 
-
         <ListView
             android:id="@+id/list_view_stories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="508dp"
+            android:layout_below="@id/viewflipper" />
 
-
-        </ListView>
-    </FrameLayout>
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -62,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation_menu" >
-
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView storyListView;
     private DatabaseHelper databaseHelper;
     private ImageButton buttonAccountInfo;
-    private Button buttonAddStory;
+
 
 
     ViewFlipper viewFlipper;
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter bookAdapter = new BookAdapter(MainActivity.this);
         List<Story> bookList = databaseHelper.getAllStories();
         bookAdapter.setBookList(bookList);
-        buttonAddStory = findViewById(R.id.buttonAddStory);
         storyListView = findViewById(R.id.list_view_stories);
         storyListView.setAdapter(bookAdapter);
 
