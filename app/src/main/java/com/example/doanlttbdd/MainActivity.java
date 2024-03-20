@@ -1,5 +1,6 @@
 package com.example.doanlttbdd;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,16 +8,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.ButtonBarLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private RecyclerView storyRecyclerView;
+    private ListView storyListView;
     private DatabaseHelper databaseHelper;
     private ImageButton buttonAccountInfo;
 
@@ -33,24 +32,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseHelper = new DatabaseHelper(MainActivity.this);
-        BookAdapter bookAdapter = new BookAdapter();
-        List<story> BookList = databaseHelper.getAllStories();
-        bookAdapter.setBookList(BookList);
-        storyRecyclerView = findViewById(R.id.recycler_view_stories);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        storyRecyclerView.setLayoutManager(layoutManager);
-        Log.d("MainActivity","Số Lượng Truyện: "+ BookList.size());
 
-        storyRecyclerView = findViewById(R.id.recycler_view_stories);
-        storyRecyclerView.setAdapter(bookAdapter);
+        databaseHelper = new DatabaseHelper(MainActivity.this);
+        BookAdapter bookAdapter = new BookAdapter(MainActivity.this);
+        List<Story> bookList = databaseHelper.getAllStories();
+        bookAdapter.setBookList(bookList);
+
+
+
+
+        storyListView = findViewById(R.id.list_view_stories);
+        storyListView.setAdapter(bookAdapter);
+
+        Log.d("MainActivity", "Số Lượng Truyện: " + bookList.size());
 
         buttonAccountInfo = findViewById(R.id.buttonAccountInfo);
         buttonAccountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intentInfo = new Intent(MainActivity.this, AccountInfoActivity.class );
-               startActivity(intentInfo);
+                Intent intentInfo = new Intent(MainActivity.this, AccountInfoActivity.class);
+                startActivity(intentInfo);
             }
         });
 
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(homeIntent);
                             finish(); // Đóng Activity hiện tại
                         }
-
                         return true;
                     case R.id.menu_account:
                         // Chuyển đến LoginActivity (màn hình đăng nhập)
@@ -88,49 +88,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public static class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
-        private List<story> bookList;
 
-        public void setBookList(List<story> bookList) {
+    public static class BookAdapter extends ArrayAdapter<Story> {
+        private List<Story> bookList;
+        private Context context;
+
+        public BookAdapter(Context context) {
+            super(context, 0);
+            this.context = context;
+        }
+
+        public void setBookList(List<Story> bookList) {
             this.bookList = bookList;
             notifyDataSetChanged();
         }
 
         @NonNull
         @Override
-        public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_story, parent, false);
-            return new BookViewHolder(view);
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = LayoutInflater.from(context).inflate(R.layout.list_item_story, parent, false);
+            }
+
+            Story book = bookList.get(position);
+            TextView textViewTitle = view.findViewById(R.id.textViewTitle);
+            TextView textViewAuthor = view.findViewById(R.id.textViewAuthor);
+            TextView textViewDescription = view.findViewById(R.id.textViewDescription);
+
+            textViewTitle.setText(book.getTitle());
+            textViewAuthor.setText(book.getAuthor());
+            textViewDescription.setText(book.getDescription());
+
+            return view;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-            story book = bookList.get(position);
-            holder.bind(book);
-        }
-
-        @Override
-        public int getItemCount() {
+        public int getCount() {
             return bookList != null ? bookList.size() : 0;
         }
-
-        class BookViewHolder extends RecyclerView.ViewHolder {
-            private TextView textViewTitle;
-            private TextView textViewAuthor;
-            private TextView textViewDescription;
-
-            public BookViewHolder(@NonNull View itemView) {
-                super(itemView);
-                textViewTitle = itemView.findViewById(R.id.textViewTitle);
-                textViewAuthor = itemView.findViewById(R.id.textViewAuthor);
-                textViewDescription = itemView.findViewById(R.id.textViewDescription);
-            }
-
-            public void bind(story book) {
-                textViewTitle.setText(book.getTitle());
-                textViewAuthor.setText(book.getAuthor());
-                textViewDescription.setText(book.getDescription());
-            }
+        public List<Story> getBookList() {
+            return bookList;
         }
     }
 }

@@ -1,16 +1,12 @@
 package com.example.doanlttbdd;
 
-public class story {
+public class Story {
     private int id;
     private String title;
     private String author;
     private String description;
 
-    public story(String title, String author, String description) {
-        // Constructor mặc định
-    }
-
-    public story(int id, String title, String author, String description) {
+    public Story(String title, String author, String description) {
         this.id = id;
         this.title = title;
         this.author = author;
