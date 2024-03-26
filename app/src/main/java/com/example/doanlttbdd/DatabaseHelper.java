@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TITLE + " TEXT," +
                 COLUMN_AUTHOR + " TEXT," +
                 COLUMN_DESCRIPTION + " TEXT, " +
-                COLUMN_CONTENT + "TEXT " +
+                COLUMN_CONTENT + " TEXT " +
                 ")";
         db.execSQL(CREATE_STORY_TABLE);
     }
@@ -58,6 +58,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return db.insert(TABLE_STORY, null, values);
 
+    }
+    public Story getStory(int storyId) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {COLUMN_TITLE, COLUMN_AUTHOR, COLUMN_DESCRIPTION, COLUMN_CONTENT};
+        String selection = COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(storyId)};
+
+        Cursor cursor = db.query(TABLE_STORY, projection, selection, selectionArgs, null, null, null);
+
+        Story story = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+            @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(COLUMN_AUTHOR));
+            @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+            @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT));
+
+            story = new Story(title, author, description, content);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+
+        return story;
     }
     public List<Story> getAllStories() {
         List<Story> storyList = new ArrayList<>();

@@ -6,23 +6,33 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextAuthor;
     private EditText editTextDescription;
+    private ListView listViewBooks;
     private Button buttonAdd;
     private EditText editTextContent;
-
+    private BookAdapter bookAdapter;
     private BottomNavigationView bottomNavigationView;
 
     private DatabaseHelper databaseHelper;
@@ -33,6 +43,7 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        listViewBooks = findViewById(R.id.list_view_stories);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextAuthor = findViewById(R.id.editTextAuthor);
         editTextDescription = findViewById(R.id.editTextDescription);
@@ -40,7 +51,9 @@ public class AdminActivity extends AppCompatActivity {
         buttonAdd = findViewById(R.id.buttonAdd);
 
         databaseHelper = new DatabaseHelper(this);
-
+        bookAdapter = new BookAdapter(this, new ArrayList<>());
+        listViewBooks.setAdapter(bookAdapter);
+        updateBookList();
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,5 +108,58 @@ public class AdminActivity extends AppCompatActivity {
                 return false;
             }
         });
+         updateBookList();
+    }
+    private void updateBookList() {
+        // Lấy danh sách truyện từ cơ sở dữ liệu
+        List<Story> bookList = databaseHelper.getAllStories();
+
+        // Cập nhật danh sách truyện trong BookAdapter
+        bookAdapter.setBookList(bookList);
+
+        // Cập nhật hiển thị ListView
+        bookAdapter.notifyDataSetChanged();
+    }
+    public static class BookAdapter extends ArrayAdapter<Story> {
+        private List<Story> bookList;
+        private Context context;
+
+        public BookAdapter(Context context, List<Story> bookList) {
+            super(context, 0, bookList);
+            this.context = context;
+            this.bookList = bookList;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = LayoutInflater.from(context).inflate(R.layout.list_item_story, parent, false);
+            }
+
+            Story book = bookList.get(position);
+            TextView textViewTitle = view.findViewById(R.id.textViewTitle);
+            TextView textViewAuthor = view.findViewById(R.id.textViewAuthor);
+            TextView textViewDescription = view.findViewById(R.id.textViewDescription);
+
+            textViewTitle.setText(book.getTitle());
+            textViewAuthor.setText(book.getAuthor());
+            textViewDescription.setText(book.getDescription());
+
+            return view;
+        }
+
+        @Override
+        public int getCount() {
+            return bookList != null ? bookList.size() : 0;
+        }
+
+        public List<Story> getBookList() {
+            return bookList;
+        }
+        public void setBookList(List<Story> bookList) {
+            this.bookList = bookList;
+        }
     }
 }
