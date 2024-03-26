@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "story";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private static final String TABLE_STORY = "story";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
@@ -33,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_STORY_TABLE = "CREATE TABLE " + TABLE_STORY +
                 "(" +
-                COLUMN_ID + " INTEGER PRIMARY KEY," +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_TITLE + " TEXT," +
                 COLUMN_AUTHOR + " TEXT," +
                 COLUMN_DESCRIPTION + " TEXT, " +
@@ -56,7 +57,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_CONTENT, content);
 
-        return db.insert(TABLE_STORY, null, values);
+
+
+
+        long result = db.insert(TABLE_STORY, null, values);
+        db.close();
+
+        return result;
 
     }
     public Story getStory(int storyId) {
@@ -118,4 +125,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return storyList;
     }
+
 }

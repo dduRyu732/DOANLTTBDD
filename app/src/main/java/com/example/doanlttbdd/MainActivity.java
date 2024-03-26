@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         storyListView = findViewById(R.id.list_view_stories);
         StoryListAdapter storyListAdapter = new StoryListAdapter(MainActivity.this, storyList);
         storyListView.setAdapter(storyListAdapter);
-        Log.d("MyApp", "Story details: " + Story.toString());
+
 
 
         buttonAccountInfo = findViewById(R.id.buttonAccountInfo);
@@ -147,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
             textViewAuthor.setText(story.getAuthor());
             textViewDescription.setText(story.getDescription());
 
+            Log.d("MyApp", "ID" + story.getId());
+            Log.d("MyApp", "Title: " + story.getTitle());
+            Log.d("MyApp", "Author: " + story.getAuthor());
+            Log.d("MyApp", "Description: " + story.getDescription());
             return view;
         }
 

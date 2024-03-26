@@ -1,7 +1,7 @@
 package com.example.doanlttbdd;
 
 public class Story {
-    private int id;
+    private Integer id;
     private String title;
     private String author;
     private String description;
@@ -16,11 +16,11 @@ public class Story {
         this.content = content;
     }
 
-    public int getId() {
+    public Integer  getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,8 +49,6 @@ public class Story {
     }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
-    @Override
-    public String toString() {
-        return "Story [id=" + id + ", title=" + title + ", author=" + author + "]";
-    }
+
+
 }
