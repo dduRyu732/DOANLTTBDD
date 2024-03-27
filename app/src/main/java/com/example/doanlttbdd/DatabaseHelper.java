@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "story";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String TABLE_STORY = "story";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
@@ -66,6 +66,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return result;
 
+    }
+    public boolean deleteBook(long storyId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete("story", "id = ?", new String[]{String.valueOf(storyId)});
+        db.close();
+
+        return rowsAffected > 0;
     }
     public Story getStory(long storyId) {
         SQLiteDatabase db = getReadableDatabase();

@@ -31,17 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
-    private EditText editTextTitle, editTextId ;
-    private EditText editTextAuthor;
-    private EditText editTextDescription;
+    private EditText editTextTitle, editTextId, editTextAuthor, editTextDescription, editTextContent ;
+    private int selectedBookPosition;
     private ListView listViewBooks;
-    private Button buttonAdd;
-    private EditText editTextContent;
+    private Button buttonAdd, buttonDelete;
     private BookAdapter bookAdapter;
     private BottomNavigationView bottomNavigationView;
 
     private DatabaseHelper databaseHelper;
-    private int nextId = 1;
+    private List<Story> bookList;
 
 
     @Override
@@ -55,13 +53,13 @@ public class AdminActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.editTextDescription);
         editTextContent = findViewById(R.id.editTextContent);
         buttonAdd = findViewById(R.id.buttonAdd);
-
+        buttonDelete = findViewById(R.id.buttonDelete);
         databaseHelper = new DatabaseHelper(this);
+        bookList = databaseHelper.getAllStories();
         bookAdapter = new BookAdapter(this, new ArrayList<>());
         listViewBooks.setAdapter(bookAdapter);
         updateBookList();
         buttonAdd.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 String title = editTextTitle.getText().toString();
@@ -69,9 +67,6 @@ public class AdminActivity extends AppCompatActivity {
                 String author = editTextAuthor.getText().toString();
                 String description = editTextDescription.getText().toString();
                 String content = editTextContent.getText().toString();
-
-
-
 
                 if (!TextUtils.isEmpty(idString)) {
                     long id = Long.parseLong(idString); // Chuyển đổi idString thành kiểu long
@@ -95,6 +90,21 @@ public class AdminActivity extends AppCompatActivity {
                     }
                 } else {
                     makeText(AdminActivity.this, "Please enter an ID", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String idString = editTextId.getText().toString();
+                if (!TextUtils.isEmpty(idString)) {
+                    long storyId = Long.parseLong(idString);
+                    boolean deleted = databaseHelper.deleteBook(storyId);
+                    if (deleted) {
+                        // Xóa thành công, cập nhật lại danh sách truyện
+                        updateBookList();
+                        Toast.makeText(AdminActivity.this, "Book deleted successfully", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
