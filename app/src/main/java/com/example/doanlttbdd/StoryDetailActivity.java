@@ -38,6 +38,7 @@ public class StoryDetailActivity extends AppCompatActivity {
     private Button submit_comment;
     private ArrayAdapter<String> adapter;
 
+    private SharedPreferences sharedPreferences;
 
 
     
@@ -46,7 +47,7 @@ public class StoryDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_detail);
-
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         textViewTitle = findViewById(R.id.textViewTitle);
         textViewAuthor = findViewById(R.id.textViewAuthor);
         textViewContent = findViewById(R.id.textViewContent);
@@ -63,14 +64,15 @@ public class StoryDetailActivity extends AppCompatActivity {
         submit_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLoggedIn()) {
+                boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+                if (isLoggedIn) {
                     // Giữ nguyên logic thêm bình luận khi người dùng đã đăng nhập
                     String commentText = commentInput.getText().toString().trim();
                     if (!commentText.isEmpty()) {
                         // Thực hiện thêm bình luận vào database hoặc nơi lưu trữ khác
                         // Cập nhật adapter để hiển thị bình luận mới
                     } else {
-                        // Hiển thị thông báo bình luận rỗng
+                        Toast.makeText(StoryDetailActivity.this, "Vui lòng nhập bình luận ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // Yêu cầu người dùng đăng nhập
@@ -134,10 +136,7 @@ public class StoryDetailActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isLoggedIn() {
-        SharedPreferences sharedPref = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
-        return sharedPref.getBoolean("isLoggedIn", false);
-    }
+
 
 
     private Story retrieveStoryFromSQLite(int storyId) {

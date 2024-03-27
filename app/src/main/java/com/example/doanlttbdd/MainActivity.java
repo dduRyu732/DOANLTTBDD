@@ -2,7 +2,6 @@ package com.example.doanlttbdd;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,29 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.view.ActionBarPolicy;
-import androidx.appcompat.widget.ButtonBarLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewFlipper viewFlipper;
     private List<Story> storyList;
-    private StoryDetailActivity storyListAdapter;
+    private StoryListAdapter storyListAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+        SearchView searchView = appBarLayout.findViewById(R.id.search_view);
 
         viewFlipper = findViewById(R.id.viewflipper);
         viewFlipper.setFlipInterval(3000);
@@ -62,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(MainActivity.this);
         storyList = databaseHelper.getAllStories();
         storyListView = findViewById(R.id.list_view_stories);
-        StoryListAdapter storyListAdapter = new StoryListAdapter(MainActivity.this, storyList);
+        storyListAdapter = new StoryListAdapter(MainActivity.this, storyList);
         storyListView.setAdapter(storyListAdapter);
-
-
 
         buttonAccountInfo = findViewById(R.id.buttonAccountInfo);
         buttonAccountInfo.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         storyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -117,50 +111,74 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-    }
 
-    class StoryListAdapter extends ArrayAdapter<Story> {
-        private List<Story> storyList;
-        private Context context;
-
-        public StoryListAdapter(Context context, List<Story> storyList) {
-            super(context, 0, storyList);
-            this.context = context;
-            this.storyList = storyList;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = convertView;
-            if (view == null) {
-                view = LayoutInflater.from(context).inflate(R.layout.list_item_story, parent, false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                performSearch(query);
+                return true;
             }
 
-            Story story = storyList.get(position);
-            TextView textViewTitle = view.findViewById(R.id.textViewTitle);
-            TextView textViewAuthor = view.findViewById(R.id.textViewAuthor);
-            TextView textViewDescription = view.findViewById(R.id.textViewDescription);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Thực hiện tìm kiếm theo từ khóa mới trong danh sách truyện và cập nhật giao diện người dùng
+                List<Story> searchResults = searchInStoryList(newText);
+                updateSearchResults(searchResults);
+                return true;
+            }
+        });
+    }
 
-            textViewTitle.setText(story.getTitle());
-            textViewAuthor.setText(story.getAuthor());
-            textViewDescription.setText(story.getDescription());
+    private void performSearch(String query) {
+        // Thực hiện tìm kiếm trong danh sách truyện và cập nhật giao diện người dùng
+        List<Story> searchResults = searchInStoryList(query);
+        updateSearchResults(searchResults);
+    }
 
-            Log.d("MyApp", "ID: " + story.getId());
-            Log.d("MyApp", "Title: " + story.getTitle());
-            Log.d("MyApp", "Author: " + story.getAuthor());
-            Log.d("MyApp", "Description: " + story.getDescription());
-            return view;
+    private List<Story> searchInStoryList(String query) {
+        List<Story> results = new ArrayList<>();
+        for (Story story : storyList) {
+            if (story.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    story.getAuthor().toLowerCase().contains(query.toLowerCase()) ||
+                    story.getDescription().toLowerCase().contains(query.toLowerCase())) {
+                results.add(story);
+            }
+        }
+        return results;
+    }
+
+    private void updateSearchResults(List<Story> searchResults) {
+        storyListAdapter = new StoryListAdapter(MainActivity.this, searchResults);
+        storyListView.setAdapter(storyListAdapter);
+    }
+
+    private class StoryListAdapter extends ArrayAdapter<Story> {
+        private Context context;
+        private List<Story> stories;
+
+        public StoryListAdapter(Context context, List<Story> stories) {
+            super(context, 0, stories);
+            this.context = context;
+            this.stories = stories;
         }
 
         @Override
-        public int getCount() {
-            return storyList != null ? storyList.size() : 0;
-        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.list_item_story, parent, false);
+            }
 
-        public Story getItem(int position) {
-            return storyList.get(position);
+            Story currentStory = stories.get(position);
+
+            TextView titleTextView = convertView.findViewById(R.id.textViewTitle);
+            TextView authorTextView = convertView.findViewById(R.id.textViewAuthor);
+            TextView descriptionTextView = convertView.findViewById(R.id.textViewDescription);
+
+            titleTextView.setText(currentStory.getTitle());
+            authorTextView.setText(currentStory.getAuthor());
+            descriptionTextView.setText(currentStory.getDescription());
+
+            return convertView;
         }
-        
     }
+}
