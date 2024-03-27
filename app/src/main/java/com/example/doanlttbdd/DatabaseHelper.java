@@ -129,6 +129,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return storyList;
     }
+
+
+
+
     // Trong phương thức retrieveStoryFromSQLite()
 
 }

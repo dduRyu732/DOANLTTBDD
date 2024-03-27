@@ -35,15 +35,30 @@
     <Button
         android:id="@+id/buttonResetPassword"
         android:layout_width="176dp"
+        style="@style/Widget.AppCompat.Button.Small"
         android:layout_height="wrap_content"
         android:text="Reset password" />
+
+    <Button
+        android:id="@+id/buttonLogout"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="175dp"
+        android:layout_height="40dp"
+
+        android:autoSizeTextType="none"
+        android:background="#F44336"
+        android:rotationX="2"
+        android:text="Đăng xuất"
+        android:textColorHighlight="#FFFFFF"
+        android:textStyle="bold"
+        app:strokeColor="#BC3C3C" />
 
     <TextView
         android:textColor="#ffff"
         android:id="@+id/textViewResetPassword"
         android:layout_width="match_parent"
         android:layout_height="95dp"
-        android:text="Nhập mật khẩu mới" />
+         />
 
     <EditText
         android:id="@+id/editTextNewPassword"

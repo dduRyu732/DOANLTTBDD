@@ -5,10 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,6 +33,14 @@ public class StoryDetailActivity extends AppCompatActivity {
     private TextView textViewContent;
     private BottomNavigationView bottomNavigationView;
     private DatabaseHelper databaseHelper;
+    private EditText commentInput;
+    private ListView commentList;
+    private Button submit_comment;
+    private ArrayAdapter<String> adapter;
+
+
+
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +51,46 @@ public class StoryDetailActivity extends AppCompatActivity {
         textViewAuthor = findViewById(R.id.textViewAuthor);
         textViewContent = findViewById(R.id.textViewContent);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        EditText commentInput = findViewById(R.id.comment_input);
+        ListView commentList = findViewById(R.id.comment_list);
+        submit_comment = findViewById(R.id.submit_comment);
         databaseHelper = new DatabaseHelper(this);
+
+        ArrayList<String> comments = new ArrayList<>();
+        adapter = new ArrayAdapter<>(StoryDetailActivity.this,
+                android.R.layout.simple_list_item_1, comments);
+        commentList.setAdapter(adapter);
+        submit_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLoggedIn()) {
+                    // Giữ nguyên logic thêm bình luận khi người dùng đã đăng nhập
+                    String commentText = commentInput.getText().toString().trim();
+                    if (!commentText.isEmpty()) {
+                        // Thực hiện thêm bình luận vào database hoặc nơi lưu trữ khác
+                        // Cập nhật adapter để hiển thị bình luận mới
+                    } else {
+                        // Hiển thị thông báo bình luận rỗng
+                    }
+                } else {
+                    // Yêu cầu người dùng đăng nhập
+                    Toast.makeText(StoryDetailActivity.this, "Vui lòng đăng nhập để bình luận", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        commentInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Giả lập nhấp vào nút submit
+                    submit_comment.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
 
         // Lấy dữ liệu chuyện từ Intent
         Intent intent = getIntent();
@@ -74,6 +133,12 @@ public class StoryDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isLoggedIn() {
+        SharedPreferences sharedPref = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        return sharedPref.getBoolean("isLoggedIn", false);
+    }
+
 
     private Story retrieveStoryFromSQLite(int storyId) {
         // Sử dụng databaseHelper để lấy chuyện từ SQLite dựa trên storyId
