@@ -86,7 +86,7 @@ public class AdminActivity extends AppCompatActivity {
                         story.setId((int) id); // Gắn giá trị id vào đối tượng Story
 
                         // Tiếp tục xử lý với đối tượng Story
-
+                        updateBookList();
                         makeText(AdminActivity.this, "Book added successfully", Toast.LENGTH_SHORT).show();
                         editTextId.setText("");
                         editTextTitle.setText("");
@@ -113,6 +113,11 @@ public class AdminActivity extends AppCompatActivity {
                         // Xóa thành công, cập nhật lại danh sách truyện
                         updateBookList();
                         Toast.makeText(AdminActivity.this, "Book deleted successfully", Toast.LENGTH_SHORT).show();
+                        editTextId.setText("");
+                        editTextTitle.setText("");
+                        editTextAuthor.setText("");
+                        editTextDescription.setText("");
+                        editTextContent.setText("");
                     }
                 }
             }
@@ -144,6 +149,7 @@ public class AdminActivity extends AppCompatActivity {
 
                     // Cập nhật lại danh sách truyện và giao diện người dùng
                     bookAdapter.notifyDataSetChanged();
+                    updateBookList();
 
                     Toast.makeText(AdminActivity.this, "Book updated successfully", Toast.LENGTH_SHORT).show();
                     editTextId.setText("");

@@ -1,6 +1,7 @@
 package com.example.doanlttbdd;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -53,7 +54,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public long insertBook(long id, String title, String author, String description, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        if (checkIfIdExists(id)) {
+            // Xử lý khi ID đã tồn tại, ví dụ: hiển thị thông báo lỗi bằng AlertDialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Error");
+            builder.setMessage("ID already exists: " + id);
+            builder.setPositiveButton("OK", null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            return -1; // Hoặc mã lỗi khác tùy theo ý định của bạn
+        }
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, id);
         values.put(COLUMN_TITLE, title);
@@ -144,9 +154,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return storyList;
     }
 
+    public boolean checkIfIdExists(long id) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {COLUMN_ID};
+        String selection = COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        Cursor cursor = db.query(TABLE_STORY, projection, selection, selectionArgs, null, null, null);
+
+        boolean idExists = (cursor != null && cursor.moveToFirst());
+
+        if (cursor != null) {
+            cursor.close();
+        }
 
 
 
-    // Trong phương thức retrieveStoryFromSQLite()
+        return idExists;
+    }
+
+
+
+
 
 }
