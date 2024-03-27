@@ -108,12 +108,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Story selectedStory = storyListAdapter.getItem(position);
-                int storyId = selectedStory.getId();
+                long storyId = selectedStory.getId();
                 Log.d("MyApp", "storyId: " + storyId);
 
                 Intent intent = new Intent(MainActivity.this, StoryDetailActivity.class);
-                intent.putExtra("storyId", selectedStory.getId());
-                Log.d("MyApp", "storyId được truyền: " + selectedStory.getId());
+                intent.putExtra("storyId", storyId);
+                Log.d("MyApp", "storyId được truyền: " + storyId);
                 startActivity(intent);
             }
         });
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             textViewAuthor.setText(story.getAuthor());
             textViewDescription.setText(story.getDescription());
 
-            Log.d("MyApp", "ID" + story.getId());
+            Log.d("MyApp", "ID: " + story.getId());
             Log.d("MyApp", "Title: " + story.getTitle());
             Log.d("MyApp", "Author: " + story.getAuthor());
             Log.d("MyApp", "Description: " + story.getDescription());

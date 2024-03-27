@@ -2,13 +2,18 @@ package com.example.doanlttbdd;
 
 import static android.widget.Toast.makeText;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
-    private EditText editTextTitle;
+    private EditText editTextTitle, editTextId ;
     private EditText editTextAuthor;
     private EditText editTextDescription;
     private ListView listViewBooks;
@@ -36,13 +41,14 @@ public class AdminActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     private DatabaseHelper databaseHelper;
+    private int nextId = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-
+        editTextId = findViewById(R.id.editTextId);
         listViewBooks = findViewById(R.id.list_view_stories);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextAuthor = findViewById(R.id.editTextAuthor);
@@ -55,23 +61,40 @@ public class AdminActivity extends AppCompatActivity {
         listViewBooks.setAdapter(bookAdapter);
         updateBookList();
         buttonAdd.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 String title = editTextTitle.getText().toString();
+                String idString = editTextId.getText().toString();
                 String author = editTextAuthor.getText().toString();
                 String description = editTextDescription.getText().toString();
                 String content = editTextContent.getText().toString();
 
-                long result = databaseHelper.insertBook(title, author, description, content);
 
-                if (result != -1) {
-                    makeText(AdminActivity.this, "?", Toast.LENGTH_SHORT).show();makeText(AdminActivity.this, "Book added successfully", Toast.LENGTH_SHORT).show();
-                    editTextTitle.setText("");
-                    editTextAuthor.setText("");
-                    editTextDescription.setText("");
-                    editTextContent.setText("");
+
+
+                if (!TextUtils.isEmpty(idString)) {
+                    long id = Long.parseLong(idString); // Chuyển đổi idString thành kiểu long
+
+                    long result = databaseHelper.insertBook(id, title, author, description, content);
+
+                    if (result != -1) {
+                        Story story = new Story();
+                        story.setId((int) id); // Gắn giá trị id vào đối tượng Story
+
+                        // Tiếp tục xử lý với đối tượng Story
+
+                        makeText(AdminActivity.this, "Book added successfully", Toast.LENGTH_SHORT).show();
+                        editTextId.setText("");
+                        editTextTitle.setText("");
+                        editTextAuthor.setText("");
+                        editTextDescription.setText("");
+                        editTextContent.setText("");
+                    } else {
+                        makeText(AdminActivity.this, "Failed to add book", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    makeText(AdminActivity.this, "Failed to add book", Toast.LENGTH_SHORT).show();
+                    makeText(AdminActivity.this, "Please enter an ID", Toast.LENGTH_SHORT).show();
                 }
             }
         });

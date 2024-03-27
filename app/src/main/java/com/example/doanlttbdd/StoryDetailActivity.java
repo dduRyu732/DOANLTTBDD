@@ -36,10 +36,10 @@ public class StoryDetailActivity extends AppCompatActivity {
         // Lấy dữ liệu chuyện từ Intent
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("storyId")) {
-            int storyId = intent.getIntExtra("storyId", -1);
+            int storyId = (int) intent.getLongExtra("storyId", -1);
             Story story = retrieveStoryFromSQLite(storyId);
             if (story != null) {
-                Log.d("MyApp", "Thông tin câu chuyện: " + story.getTitle() + ", " + story.getAuthor() + ", " + story.getContent());
+                Log.d("StoryDetail", "Thông tin câu chuyện: " + story.getTitle() + ", " + story.getAuthor() + ", " + story.getContent());
                 textViewTitle.setText(story.getTitle());
                 textViewAuthor.setText(story.getAuthor());
                 textViewContent.setText(story.getContent());
