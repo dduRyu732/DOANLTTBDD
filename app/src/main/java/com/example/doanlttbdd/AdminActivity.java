@@ -1,9 +1,6 @@
 package com.example.doanlttbdd;
 
 import static android.widget.Toast.makeText;
-
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -34,7 +31,7 @@ public class AdminActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextId, editTextAuthor, editTextDescription, editTextContent ;
     private int selectedBookPosition;
     private ListView listViewBooks;
-    private Button buttonAdd, buttonDelete;
+    private Button buttonAdd, buttonDelete, buttonUpdate;
     private BookAdapter bookAdapter;
     private BottomNavigationView bottomNavigationView;
 
@@ -54,11 +51,22 @@ public class AdminActivity extends AppCompatActivity {
         editTextContent = findViewById(R.id.editTextContent);
         buttonAdd = findViewById(R.id.buttonAdd);
         buttonDelete = findViewById(R.id.buttonDelete);
+        buttonUpdate =findViewById(R.id.buttonUpdate);
         databaseHelper = new DatabaseHelper(this);
         bookList = databaseHelper.getAllStories();
         bookAdapter = new BookAdapter(this, new ArrayList<>());
         listViewBooks.setAdapter(bookAdapter);
         updateBookList();
+        listViewBooks.setOnItemClickListener((parent, view, position, id) -> {
+            selectedBookPosition = position;
+            Story selectedStory = bookList.get(selectedBookPosition);
+
+            editTextId.setText(String.valueOf(selectedStory.getId()));
+            editTextTitle.setText(selectedStory.getTitle());
+            editTextAuthor.setText(selectedStory.getAuthor());
+            editTextDescription.setText(selectedStory.getDescription());
+            editTextContent.setText(selectedStory.getContent());
+        });
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +115,47 @@ public class AdminActivity extends AppCompatActivity {
                         Toast.makeText(AdminActivity.this, "Book deleted successfully", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+        buttonUpdate.setOnClickListener(v -> {
+            // Lấy thông tin từ các trường nhập liệu
+            String title = editTextTitle.getText().toString();
+            String idString = editTextId.getText().toString();
+            String author = editTextAuthor.getText().toString();
+            String description = editTextDescription.getText().toString();
+            String content = editTextContent.getText().toString();
+
+            if (!TextUtils.isEmpty(idString)) {
+                long id = Long.parseLong(idString);
+
+                long result = databaseHelper.updateBook(id, title, author, description, content);
+
+                if (result != -1) {
+                    // Tạo truyện mới với thông tin đã chỉnh sửa
+                    Story updatedStory = new Story();
+                    updatedStory.setId((int) id);
+                    updatedStory.setTitle(title);
+                    updatedStory.setAuthor(author);
+                    updatedStory.setDescription(description);
+                    updatedStory.setContent(content);
+
+                    // Cập nhật lại truyện trong danh sách
+                    bookList.set(selectedBookPosition, updatedStory);
+
+                    // Cập nhật lại danh sách truyện và giao diện người dùng
+                    bookAdapter.notifyDataSetChanged();
+
+                    Toast.makeText(AdminActivity.this, "Book updated successfully", Toast.LENGTH_SHORT).show();
+                    editTextId.setText("");
+                    editTextTitle.setText("");
+                    editTextAuthor.setText("");
+                    editTextDescription.setText("");
+                    editTextContent.setText("");
+                } else {
+                    Toast.makeText(AdminActivity.this, "Failed to update book", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(AdminActivity.this, "Please enter an ID", Toast.LENGTH_SHORT).show();
             }
         });
         bottomNavigationView = findViewById(R.id.bottom_navigation);

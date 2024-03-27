@@ -74,6 +74,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return rowsAffected > 0;
     }
+    public long updateBook(long id, String title, String author, String description, String content) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, title);
+        values.put(COLUMN_AUTHOR, author);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_CONTENT, content);
+
+        long result = db.update(TABLE_STORY, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+
+        return result;
+    }
     public Story getStory(long storyId) {
         SQLiteDatabase db = getReadableDatabase();
 
