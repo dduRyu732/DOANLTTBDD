@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "story";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 8;
     private static final String TABLE_STORY = "story";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
@@ -22,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CONTENT ="content";
     private Context context;
      private final String TAG ="DatabaseHelper";
+    private DatabaseHelper databaseHelper;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,57 +39,100 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TITLE + " TEXT," +
                 COLUMN_AUTHOR + " TEXT," +
                 COLUMN_DESCRIPTION + " TEXT, " +
-                COLUMN_CONTENT + "TEXT " +
+                COLUMN_CONTENT + " TEXT " +
                 ")";
         db.execSQL(CREATE_STORY_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STORY);
         onCreate(db);
+
     }
-    public long insertBook(String title, String author, String description, String content) {
+    public long insertBook(long id, String title, String author, String description, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, id);
         values.put(COLUMN_TITLE, title);
         values.put(COLUMN_AUTHOR, author);
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_CONTENT, content);
 
-        return db.insert(TABLE_STORY, null, values);
+        long result = db.insert(TABLE_STORY, null, values);
+        db.close();
+
+        return result;
 
     }
+    public boolean deleteBook(long storyId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete("story", "id = ?", new String[]{String.valueOf(storyId)});
+        db.close();
+
+        return rowsAffected > 0;
+    }
+    public Story getStory(long storyId) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {COLUMN_TITLE, COLUMN_AUTHOR, COLUMN_DESCRIPTION, COLUMN_CONTENT};
+        String selection = COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(storyId)};
+
+        Cursor cursor = db.query(TABLE_STORY, projection, selection, selectionArgs, null, null, null);
+
+        Story story = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+            @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(COLUMN_AUTHOR));
+            @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+            @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT));
+
+            story = new Story(storyId, title, author, description, content);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+
+        return story;
+    }
+
     public List<Story> getAllStories() {
         List<Story> storyList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_STORY;
-        // Mở kết nối với cơ sở dữ liệu
         SQLiteDatabase db = getReadableDatabase();
 
-        // Thực hiện truy vấn để lấy danh sách truyện
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // Kiểm tra xem có dữ liệu trả về từ truy vấn hay không
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Đọc dữ liệu từ con trỏ và tạo đối tượng truyện
+                @SuppressLint("Range") long storyId = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
                 @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
                 @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(COLUMN_AUTHOR));
                 @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
                 @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT));
 
-                Story book = new Story( title, author, description, content);
+                Story story = new Story(storyId, title, author, description, content);
 
-                // Thêm đối tượng truyện vào danh sách
-                storyList.add(book);
+                storyList.add(story);
             } while (cursor.moveToNext());
         }
 
-        // Đóng con trỏ và đóng kết nối với cơ sở dữ liệu
         cursor.close();
         db.close();
 
         return storyList;
     }
+
+
+
+
+    // Trong phương thức retrieveStoryFromSQLite()
+
 }

@@ -1,14 +1,13 @@
 package com.example.doanlttbdd;
 
 public class Story {
-    private int id;
+    private long id;
     private String title;
     private String author;
     private String description;
-
     private String content;
 
-    public Story(String title, String author, String description, String content) {
+    public Story(long id, String title, String author, String description, String content) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -16,11 +15,14 @@ public class Story {
         this.content = content;
     }
 
-    public int getId() {
+    public Story() {
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -47,6 +49,12 @@ public class Story {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

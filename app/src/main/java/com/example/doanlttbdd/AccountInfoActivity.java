@@ -27,6 +27,7 @@ public class AccountInfoActivity extends AppCompatActivity {
     private  TextView textViewEmail;
     private  BottomNavigationView bottomNavigationView;
 
+
     private boolean isResetPasswordVisible = false;
 
     private EditText editTextNewPassword;
@@ -35,6 +36,7 @@ public class AccountInfoActivity extends AppCompatActivity {
     private Button buttonAddStory;
     private SharedPreferences sharedPreferences;
 
+    private Button buttonLogout;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -49,9 +51,14 @@ public class AccountInfoActivity extends AppCompatActivity {
         textViewResetPassword = findViewById(R.id.textViewResetPassword);
         editTextNewPassword = findViewById(R.id.editTextNewPassword);
         buttonSavePassword = findViewById(R.id.buttonSavePassword);
+        buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         buttonAddStory = findViewById(R.id.buttonAddStory);
+
+
+
+
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
         if (isLoggedIn) {
             String username = sharedPreferences.getString("username", "");
@@ -63,6 +70,21 @@ public class AccountInfoActivity extends AppCompatActivity {
         } else {
             buttonAddStory.setVisibility(View.GONE); // Ẩn nút "Thêm truyện"
         }
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xóa thông tin đăng nhập
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                sharedPreferences.edit().clear().apply();
+
+                // Chuyển đến màn hình đăng nhập
+                Intent intent = new Intent(AccountInfoActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+                // Đóng Activity hiện tại
+                finish();
+            }
+        });
         buttonAddStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,9 +130,11 @@ public class AccountInfoActivity extends AppCompatActivity {
         String phoneNumber = sharedPreferences.getString("phoneNumber", "");
         String email = sharedPreferences.getString("email","");
         textViewAccountName.setText("Tên Tài Khoản: " +accountName);
-        textViewPassword.setText("Mật Khẩu: "+password);
+
+        textViewPassword.setText("Mật Khẩu: "+ password);
         textViewPhoneNumber.setText("Số Điện Thoại: "+phoneNumber);
         textViewEmail.setText("Email: "+email);
+
         buttonResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +158,8 @@ public class AccountInfoActivity extends AppCompatActivity {
         EditText editTextCurrentPassword = changePasswordDialog.findViewById(R.id.editTextCurrentPassword);
         EditText editTextNewPassword = changePasswordDialog.findViewById(R.id.editTextNewPassword);
         Button buttonSavePassword = changePasswordDialog.findViewById(R.id.buttonSavePassword);
+
+
 
         buttonSavePassword.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -8,37 +8,57 @@
     <TextView
         android:id="@+id/textViewAccountName"
         android:layout_width="match_parent"
+        android:textSize="20dp"
         android:layout_height="77dp"
         android:text="Tên tài khoản" />
 
     <TextView
         android:id="@+id/textViewPassword"
         android:layout_width="match_parent"
+        android:textSize="20dp"
         android:layout_height="77dp"
         android:text="Mật khẩu" />
 
     <TextView
         android:id="@+id/textViewPhoneNumber"
         android:layout_width="match_parent"
+        android:textSize="20dp"
         android:layout_height="77dp"
         android:text="Số điện thoại" />
     <TextView
         android:id="@+id/textViewEmail"
         android:layout_width="match_parent"
+        android:textSize="20dp"
         android:layout_height="77dp"
         android:text="Email" />
 
     <Button
         android:id="@+id/buttonResetPassword"
         android:layout_width="176dp"
+        style="@style/Widget.AppCompat.Button.Small"
         android:layout_height="wrap_content"
         android:text="Reset password" />
 
+    <Button
+        android:id="@+id/buttonLogout"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="175dp"
+        android:layout_height="40dp"
+
+        android:autoSizeTextType="none"
+        android:background="#F44336"
+        android:rotationX="2"
+        android:text="Đăng xuất"
+        android:textColorHighlight="#FFFFFF"
+        android:textStyle="bold"
+        app:strokeColor="#BC3C3C" />
+
     <TextView
+        android:textColor="#ffff"
         android:id="@+id/textViewResetPassword"
         android:layout_width="match_parent"
         android:layout_height="95dp"
-        android:text="Nhập mật khẩu mới" />
+         />
 
     <EditText
         android:id="@+id/editTextNewPassword"

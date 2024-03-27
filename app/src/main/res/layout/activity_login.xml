@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#316749"
+
     android:gravity="center"
     android:orientation="vertical">
 
@@ -15,6 +15,7 @@
 
         <ImageView
             android:id="@+id/imageView3"
+            android:layout_marginTop="70dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/logo" />
@@ -25,8 +26,9 @@
         android:layout_width="357dp"
         android:layout_height="103dp"
         android:hint="Username"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#BAE6EDDB"
+        android:drawableRight="@drawable/ic_user"
+        android:textColor="#FF5722"
+        android:textColorHint="#03A9F4"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -36,8 +38,9 @@
         android:layout_height="98dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textColor="#ffffff"
-        android:textColorHint="#ADE0E6D5"
+        android:textColor="#F44336"
+        android:drawableRight="@drawable/ic_pass"
+        android:textColorHint="#03A9F4"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -52,7 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng nhập"
-            android:textColor="#009688"
+            android:textColor="#F44336"
+            android:layout_marginTop="30dp"
             android:textColorHighlight="#009688"
             android:textColorLink="#009688" />
 
@@ -62,7 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng ký"
-            android:textColor="#009688"
+            android:layout_marginTop="30dp"
+            android:textColor="#FF5722"
             android:textColorHighlight="#009688"
             android:textColorLink="#009688"
             app:rippleColor="@color/design_default_color_secondary_variant" />

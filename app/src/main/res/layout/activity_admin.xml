@@ -7,66 +7,92 @@
     android:padding="16dp">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
         android:text="Add Book"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/editTextTitle"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="8dp"
-        android:hint="Title" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <EditText
-        android:id="@+id/editTextAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
-        android:hint="Author" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginBottom="16dp"
-        android:hint="Description" />
-    <EditText
-        android:id="@+id/editTextContent"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginBottom="16dp"
-        android:hint="content" />
+            <EditText
+                android:id="@+id/editTextId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="ID" />
 
-    <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Book"
-        android:layout_gravity="center_horizontal" />
+            <EditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Title" />
 
-    <ListView
-        android:id="@+id/listViewStories"
-        android:layout_width="wrap_content"
-        android:layout_height="283dp" />
+            <EditText
+                android:id="@+id/editTextAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Author" />
+
+            <EditText
+                android:id="@+id/editTextDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Description" />
+
+            <EditText
+                android:id="@+id/editTextContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Content" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            app:menu="@menu/bottom_navigation_menu" />
+            android:text="Add Book" />
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_view_stories"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </LinearLayout>
