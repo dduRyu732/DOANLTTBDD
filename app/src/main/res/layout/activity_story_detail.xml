@@ -24,18 +24,62 @@
         android:textSize="16sp"
         android:gravity="center" />
 
-    <TextView
-        android:id="@+id/textViewContent"
-        android:layout_width="wrap_content"
-        android:layout_height="412dp"
+    <ScrollView
+        android:layout_width="390dp"
+        android:layout_height="371dp"
         android:layout_below="@+id/textViewAuthor"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:textSize="14sp" />
+        android:layout_marginTop="13dp">
+
+        <TextView
+            android:id="@+id/textViewContent"
+            android:layout_width="367dp"
+            android:layout_height="367dp"
+            android:layout_below="@+id/textViewAuthor"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:textSize="14sp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/comment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@id/bottom_navigation">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/submit_comment"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+
+                android:text="Gửi" />
+
+            <EditText
+                android:id="@+id/comment_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:hint="Viết bình luận..." />
+
+            <ListView
+                android:id="@+id/comment_list"
+                android:layout_width="377dp"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -43,44 +87,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:layout_marginBottom="6dp"
-        app:menu="@menu/bottom_navigation_menu" >
+        android:layout_marginBottom="12dp"
+        app:menu="@menu/bottom_navigation_menu">
 
-        <ListView
-            android:id="@+id/comment_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-    <ScrollView
-            android:id="@+id/comment_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewContent">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/submit_comment"
-                    style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-
-                    android:text="Gửi" />
-
-                <EditText
-                    android:id="@+id/comment_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-8dp"
-                    android:hint="Viết bình luận..." />
-
-            </RelativeLayout>
-
-        </ScrollView>
 
 
 </RelativeLayout>

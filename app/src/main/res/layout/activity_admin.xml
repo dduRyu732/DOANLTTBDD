@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Add Book"
+        android:text="ADMIN SITE"
         android:textSize="24sp"
         android:textStyle="bold" />
 

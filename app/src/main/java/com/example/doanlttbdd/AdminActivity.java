@@ -85,6 +85,7 @@ public class AdminActivity extends AppCompatActivity {
                         editTextAuthor.setText("");
                         editTextDescription.setText("");
                         editTextContent.setText("");
+                        updateBookList();
                     } else {
                         makeText(AdminActivity.this, "Failed to add book", Toast.LENGTH_SHORT).show();
                     }
